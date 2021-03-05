@@ -1,7 +1,7 @@
 package com.assemblyline.application.controllers;
 
-import com.assemblyline.domain.entities.assembly.AssemblyLine;
-import com.assemblyline.service.AssemblyLineService;
+import com.assemblyline.domain.entities.routine.Routine;
+import com.assemblyline.service.RoutineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Controller;
 public class AssemblyLineController {
 
     @Autowired
-    private AssemblyLineService service;
+    private RoutineService service;
 
-    public void addAssembly(AssemblyLine assemblyLine){
-        service.add(assemblyLine);
+    public void addAssembly(Routine routine){
+        service.add(routine);
     }
 }
