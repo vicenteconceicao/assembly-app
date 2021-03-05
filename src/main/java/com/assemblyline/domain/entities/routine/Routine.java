@@ -15,12 +15,49 @@ public class Routine {
     private int afternoonUsedTime;
     private int currentMinutes;
 
+    private int morningMaxMinutes;
+    private int afternoonMaxMinutes;
+
     public Routine() {
         this.morningOperations = new ArrayList<>();
         this.afternoonOperations = new ArrayList<>();
+
         this.currentMinutes = 540;
         this.morningUsedTime = 0;
         this.afternoonUsedTime = 0;
+
+        this.morningMaxMinutes = 180;
+        this.afternoonMaxMinutes = 240;
+    }
+
+    public boolean addMorningTask(Task task){
+        if(task.getMinutes() + morningUsedTime <= morningMaxMinutes){
+            morningOperations.add(new TaskOperation(task, currentMinutes));
+            currentMinutes += task.getMinutes();
+            morningUsedTime += task.getMinutes();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addAfternoonTask(Task task){
+        if(task.getMinutes() + afternoonUsedTime <= afternoonMaxMinutes){
+            afternoonOperations.add(new TaskOperation(task, currentMinutes));
+            currentMinutes += task.getMinutes();
+            afternoonUsedTime += task.getMinutes();
+            return true;
+        }
+        return false;
+    }
+
+    private Task getGymnasticsTask(){
+        return new Task("Ginástica laboral", 0);
+    }
+
+    private TaskOperation calcLunchOperation(){
+        Time lunchStart = new Time(12, 0);
+        Task lunchTask  = new Task("Almoço", 60);
+        return new TaskOperation(lunchTask, lunchStart);
     }
 
     public int getMorningUsedTime() {
@@ -53,36 +90,6 @@ public class Routine {
 
     public void setLunchOperation(TaskOperation lunchOperation) {
         this.lunchOperation = lunchOperation;
-    }
-
-    public boolean addMorningTask(Task task){
-        if(task.getMinutes() + morningUsedTime <= 180){
-            morningOperations.add(new TaskOperation(task, currentMinutes));
-            currentMinutes += task.getMinutes();
-            morningUsedTime += task.getMinutes();
-            return true;
-        }
-        return false;
-    }
-
-    public boolean addAfternoonTask(Task task){
-        if(task.getMinutes() + afternoonUsedTime <= 240){
-            afternoonOperations.add(new TaskOperation(task, currentMinutes));
-            currentMinutes += task.getMinutes();
-            afternoonUsedTime += task.getMinutes();
-            return true;
-        }
-        return false;
-    }
-
-    private Task getGymnasticsTask(){
-        return new Task("Ginástica laboral", 0);
-    }
-
-    private TaskOperation calcLunchOperation(){
-        Time lunchStart = new Time(12, 0);
-        Task lunchTask  = new Task("Almoço", 60);
-        return new TaskOperation(lunchTask, lunchStart);
     }
 
     public ArrayList<TaskOperation> getMorningOperations() {
