@@ -19,13 +19,15 @@ public class FileReader {
         Queue<Task> tasks = new LinkedList<>();
 
         try {
-            File myObj = new File(source);
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                tasks.add(Task.parseTask(data));
+            File file = new File(source);
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                String data = scanner.nextLine();
+                if(!data.isEmpty()){
+                    tasks.add(Task.parseTask(data));
+                }
             }
-            myReader.close();
+            scanner.close();
 
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
