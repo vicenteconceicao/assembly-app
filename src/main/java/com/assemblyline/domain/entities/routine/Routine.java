@@ -11,6 +11,8 @@ public class Routine {
     private TaskOperation lunchOperation;
     private ArrayList<TaskOperation> afternoonOperations;
 
+    private ArrayList<TaskOperation> taskOperations;
+
     private int morningUsedTime;
     private int afternoonUsedTime;
     private int currentMinutes;
@@ -21,6 +23,7 @@ public class Routine {
     public Routine() {
         this.morningOperations = new ArrayList<>();
         this.afternoonOperations = new ArrayList<>();
+        this.taskOperations = new ArrayList<>();
 
         this.currentMinutes = 540;
         this.morningUsedTime = 0;
@@ -32,7 +35,7 @@ public class Routine {
 
     public boolean addMorningTask(Task task){
         if(task.getMinutes() + morningUsedTime <= morningMaxMinutes){
-            morningOperations.add(new TaskOperation(task, currentMinutes));
+            taskOperations.add(new TaskOperation(task, currentMinutes));
             currentMinutes += task.getMinutes();
             morningUsedTime += task.getMinutes();
             return true;
@@ -42,7 +45,7 @@ public class Routine {
 
     public boolean addAfternoonTask(Task task){
         if(task.getMinutes() + afternoonUsedTime <= afternoonMaxMinutes){
-            afternoonOperations.add(new TaskOperation(task, currentMinutes));
+            taskOperations.add(new TaskOperation(task, currentMinutes));
             currentMinutes += task.getMinutes();
             afternoonUsedTime += task.getMinutes();
             return true;
@@ -50,34 +53,12 @@ public class Routine {
         return false;
     }
 
-    private Task getGymnasticsTask(){
-        return new Task("Ginástica laboral", 0);
-    }
-
-    private TaskOperation calcLunchOperation(){
-        Time lunchStart = new Time(12, 0);
-        Task lunchTask  = new Task("Almoço", 60);
-        return new TaskOperation(lunchTask, lunchStart);
-    }
-
     public int getMorningUsedTime() {
         return morningUsedTime;
     }
 
-    public void setMorningUsedTime(int morningUsedTime) {
-        this.morningUsedTime = morningUsedTime;
-    }
-
     public int getAfternoonUsedTime() {
         return afternoonUsedTime;
-    }
-
-    public void setAfternoonUsedTime(int afternoonUsedTime) {
-        this.afternoonUsedTime = afternoonUsedTime;
-    }
-
-    public int getCurrentMinutes() {
-        return currentMinutes;
     }
 
     public void setCurrentMinutes(int currentMinutes) {
@@ -88,8 +69,8 @@ public class Routine {
         return lunchOperation;
     }
 
-    public void setLunchOperation(TaskOperation lunchOperation) {
-        this.lunchOperation = lunchOperation;
+    public void addLunchOperation(TaskOperation lunchOperation) {
+        taskOperations.add(lunchOperation);
     }
 
     public ArrayList<TaskOperation> getMorningOperations() {
@@ -98,5 +79,17 @@ public class Routine {
 
     public ArrayList<TaskOperation> getAfternoonOperations() {
         return afternoonOperations;
+    }
+
+    public int getMorningMaxMinutes() {
+        return morningMaxMinutes;
+    }
+
+    public int getAfternoonMaxMinutes() {
+        return afternoonMaxMinutes;
+    }
+
+    public ArrayList<TaskOperation> getTaskOperations() {
+        return taskOperations;
     }
 }
