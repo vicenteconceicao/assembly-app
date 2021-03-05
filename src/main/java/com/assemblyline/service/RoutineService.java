@@ -32,35 +32,45 @@ public class RoutineService implements IServiceRoutine {
     @Override
     public void addTasks(Queue<Task> tasks) {
         Routine routine = new Routine();
+
         boolean routineAdded;
+
         Task item;
-        while (tasks.size() > 0) {
-            while (routine.getMorningUsedTime() < routine.getMorningMaxMinutes() && tasks.size() > 0) {
-                item = tasks.remove();
-                routineAdded = routine.addMorningTask(item);
+
+        Queue<Task> tasksFirstCircle = tasks;
+
+        while (tasksFirstCircle.size() > 0) {
+
+            Queue<Task> tasksSecondCircle = new LinkedList<>();
+
+            while (routine.getCurrentMinutes() < routine.getLunchMinute() && tasksFirstCircle.size() > 0) {
+                item = tasksFirstCircle.remove();
+                routineAdded = routine.addTask(item, routine.getCurrentMinutes(), routine.getLunchMinute());
                 if (!routineAdded)
-                    tasks.add(item);
+                    tasksSecondCircle.add(item);
             }
+
+            tasksSecondCircle.addAll(tasksFirstCircle);
+
+            tasksFirstCircle.clear();
 
             routine.addLunchOperation(DefaultOperations.getLunchOperation());
-            routine.setCurrentMinutes(780);
 
-            Queue<Task> newTasks = new LinkedList<>();
-
-            while (routine.getAfternoonUsedTime() < routine.getAfternoonMaxMinutes() && tasks.size() > 0) {
-
-                item = tasks.remove();
-
-                routineAdded = routine.addAfternoonTask(item);
-
+            while (routine.getCurrentMinutes() < routine.getMaxGymStartMinute() && tasksSecondCircle.size() > 0) {
+                item = tasksSecondCircle.remove();
+                routineAdded = routine.addTask(item, routine.getCurrentMinutes(), routine.getMaxGymStartMinute());
                 if (!routineAdded){
-                    newTasks.add(item);
+                    tasksFirstCircle.add(item);
                 }
             }
-            routine.addAfternoonTask(DefaultOperations.getGymnasticsTask());
+
+            tasksFirstCircle.addAll(tasksSecondCircle);
+
+            routine.addTask(DefaultOperations.getGymnasticsTask(), routine.getCurrentMinutes(), routine.getMaxGymStartMinute());
+
             repository.add(routine);
+
             routine = new Routine();
-            tasks = newTasks;
         }
     }
 }
