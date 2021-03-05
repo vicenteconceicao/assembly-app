@@ -35,19 +35,19 @@ public class RoutineService implements IServiceRoutine {
         boolean routineAdded;
         Task item;
         while (tasks.size() > 0) {
-            while (routine.getMorningUsedTime() < 180 && tasks.size() > 0) {
+            while (routine.getMorningUsedTime() < routine.getMorningMaxMinutes() && tasks.size() > 0) {
                 item = tasks.remove();
                 routineAdded = routine.addMorningTask(item);
                 if (!routineAdded)
                     tasks.add(item);
             }
 
-            routine.setLunchOperation(DefaultOperations.getLunchOperation());
+            routine.addLunchOperation(DefaultOperations.getLunchOperation());
             routine.setCurrentMinutes(780);
 
             Queue<Task> newTasks = new LinkedList<>();
 
-            while (routine.getAfternoonUsedTime() < 240 && tasks.size() > 0) {
+            while (routine.getAfternoonUsedTime() < routine.getAfternoonMaxMinutes() && tasks.size() > 0) {
 
                 item = tasks.remove();
 

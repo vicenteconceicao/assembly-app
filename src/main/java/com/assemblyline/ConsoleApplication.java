@@ -36,6 +36,10 @@ public class ConsoleApplication implements CommandLineRunner {
 
 		ArrayList<Routine> routs = routineService.getAll();
 
-		System.out.println(routs.size());
+		for (int i = 0; i < routs.size(); i++) {
+			System.out.println("Linha de montagem "+(i+1)+":");
+			System.out.println(routs.get(i).getTaskOperations());
+			System.out.println("");
+		}
 	}
 }
