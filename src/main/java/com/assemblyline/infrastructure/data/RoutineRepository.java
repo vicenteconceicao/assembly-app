@@ -1,6 +1,7 @@
 package com.assemblyline.infrastructure.data;
 
 import com.assemblyline.domain.entities.routine.Routine;
+import com.assemblyline.domain.entities.task.Task;
 import com.assemblyline.domain.interfaces.IRepositoryRoutine;
 import org.springframework.stereotype.Repository;
 

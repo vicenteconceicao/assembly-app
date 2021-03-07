@@ -1,4 +1,4 @@
-package com.assemblyline.domain.entities.time;
+package com.assemblyline.domain.valueTypes;
 
 public class Time {
     private int hours;

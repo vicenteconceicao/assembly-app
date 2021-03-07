@@ -1,24 +1,19 @@
 package com.assemblyline.domain.entities.routine;
 
-import com.assemblyline.domain.entities.time.Time;
 import com.assemblyline.domain.entities.task.Task;
-import com.assemblyline.domain.entities.task.TaskOperation;
+import com.assemblyline.domain.entities.operation.Operation;
+import com.assemblyline.domain.valueTypes.Options;
 
 import java.util.ArrayList;
 
 public class Routine {
-    private ArrayList<TaskOperation> taskOperations;
+    private ArrayList<Operation> operations;
 
     private int currentMinutes;
-    private int maxGymStartMinute;
-
-    private int lunchMinute;
 
     public Routine() {
-        this.taskOperations = new ArrayList<>();
+        this.operations = new ArrayList<>();
         this.currentMinutes = 540;
-        this.lunchMinute = 720;
-        this.maxGymStartMinute = 1020;
     }
 
     public boolean addTask(Task task, int usedTime, int maxMinutes){
@@ -30,28 +25,26 @@ public class Routine {
     }
 
     private void addOperation(Task task) {
-        taskOperations.add(new TaskOperation(task, currentMinutes));
+        operations.add(new Operation(task, currentMinutes));
         currentMinutes += task.getMinutes();
     }
 
-    public void addLunchOperation(TaskOperation lunchOperation) {
-        taskOperations.add(lunchOperation);
-        currentMinutes = this.lunchMinute + lunchOperation.getTask().getMinutes();
+    public void addLunchOperation(Operation lunchOperation) {
+        operations.add(lunchOperation);
+        currentMinutes = Options.MINUTE_LUNCH_TART + lunchOperation.getTask().getMinutes();
     }
 
-    public ArrayList<TaskOperation> getTaskOperations() {
-        return taskOperations;
-    }
-
-    public int getLunchMinute() {
-        return lunchMinute;
+    public ArrayList<Operation> getOperations() {
+        return operations;
     }
 
     public int getCurrentMinutes() {
         return currentMinutes;
     }
 
-    public int getMaxGymStartMinute() {
-        return maxGymStartMinute;
+    public void printOperations(){
+        for (int i = 0; i < operations.size(); i++) {
+            System.out.println(operations.get(i));
+        }
     }
 }
