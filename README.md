@@ -49,7 +49,14 @@ mvn spring-boot:run
 
 OR
 
-- Open Command Prompt and navigate to folder assembly-app/target
+- Open Command Prompt and navigate to folder assembly-app
+- Run the command below
+
+```shell
+mvn clean package
+```
+
+- Navigate to folder assembly-app/target
 - Run the command below
 
 ```shell
@@ -71,7 +78,7 @@ java -jar assemblyline-0.0.1-SNAPSHOT.jar
 
 **The result will be shown in the terminal**
 
-**An endpoint by Rest API is available at:** **http://localhost:8080/routines**
+**An endpoint by Rest API is available at:** http://localhost:8080/routines
 
 
 
