@@ -50,9 +50,9 @@ public class RoutineService implements IServiceRoutine {
              * The code inserts tasks as long as the total amount of time does not reach the start of lunch
              * or until tasks on the list run out.
              */
-            while (routine.getCurrentMinutes() < Options.MINUTE_LUNCH_TART && morningCircleTasks.size() > 0) {
+            while (routine.getCurrentMinutes() < Options.MINUTE_LUNCH_START && morningCircleTasks.size() > 0) {
                 item = morningCircleTasks.remove();
-                routineAdded = routine.addTask(item, routine.getCurrentMinutes(), Options.MINUTE_LUNCH_TART);
+                routineAdded = routine.addTask(item, routine.getCurrentMinutes(), Options.MINUTE_LUNCH_START);
                 if (!routineAdded)
                     afternoonCircleTasks.add(item);
             }
@@ -61,21 +61,21 @@ public class RoutineService implements IServiceRoutine {
 
             morningCircleTasks.clear();
 
-            if(routine.getCurrentMinutes() < Options.MINUTE_LUNCH_TART) {
-                routine.setCurrentMinutes(Options.MINUTE_LUNCH_TART);
+            if(routine.getCurrentMinutes() < Options.MINUTE_LUNCH_START) {
+                routine.setCurrentMinutes(Options.MINUTE_LUNCH_START);
             }
 
             standardTask = FactoryTask.getLunchTask();
-            routine.addTask(standardTask, routine.getCurrentMinutes(), Options.MINUTE_LUNCH_TART + standardTask.getMinutes());
+            routine.addTask(standardTask, routine.getCurrentMinutes(), Options.MINUTE_LUNCH_START + standardTask.getMinutes());
 
             /***
              * Algorithm to insert tasks in the afternoon (after lunch).
              * The code inserts tasks as long as the total amount of time does not reach the beginning of the gym
              * or until tasks on the list run out.
              */
-            while (routine.getCurrentMinutes() < Options.MAX_MINUTE_GYMS_TART && afternoonCircleTasks.size() > 0) {
+            while (routine.getCurrentMinutes() < Options.MAX_MINUTE_GYMS_START && afternoonCircleTasks.size() > 0) {
                 item = afternoonCircleTasks.remove();
-                routineAdded = routine.addTask(item, routine.getCurrentMinutes(), Options.MAX_MINUTE_GYMS_TART);
+                routineAdded = routine.addTask(item, routine.getCurrentMinutes(), Options.MAX_MINUTE_GYMS_START);
                 if (!routineAdded){
                     morningCircleTasks.add(item);
                 }
@@ -88,7 +88,7 @@ public class RoutineService implements IServiceRoutine {
             }
 
             standardTask = FactoryTask.getGymnasticsTask();
-            routine.addTask(standardTask, routine.getCurrentMinutes(), Options.MAX_MINUTE_GYMS_TART);
+            routine.addTask(standardTask, routine.getCurrentMinutes(), Options.MAX_MINUTE_GYMS_START);
 
             routineRepository.add(routine);
 

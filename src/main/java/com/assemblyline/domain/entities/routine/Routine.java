@@ -31,7 +31,7 @@ public class Routine {
 
     public void addLunchOperation(Operation lunchOperation) {
         operations.add(lunchOperation);
-        currentMinutes = Options.MINUTE_LUNCH_TART + lunchOperation.getTask().getMinutes();
+        currentMinutes = Options.MINUTE_LUNCH_START + lunchOperation.getTask().getMinutes();
     }
 
     public ArrayList<Operation> getOperations() {
