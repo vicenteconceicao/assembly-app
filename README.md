@@ -69,6 +69,12 @@ java -jar assemblyline-0.0.1-SNAPSHOT.jar
 
 
 
+**The result will be shown in the terminal**
+
+**An endpoint by Rest API is available at:** http://localhost:8080/routines
+
+
+
 ## Contact
 
 - Vicente Júnior - [LinkedIn](https://www.linkedin.com/in/vicente-jr-41787963/) - vicente.junior@live.com 
