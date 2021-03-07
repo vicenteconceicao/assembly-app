@@ -2,6 +2,7 @@ package com.assemblyline;
 
 import com.assemblyline.domain.entities.routine.Routine;
 import com.assemblyline.domain.entities.task.Task;
+import com.assemblyline.domain.interfaces.IServiceRoutine;
 import com.assemblyline.domain.services.FileReader;
 import com.assemblyline.service.RoutineService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.util.*;
 public class ConsoleApplication implements CommandLineRunner {
 
 	@Autowired
-	protected RoutineService routineService;
+	protected IServiceRoutine routineService;
 
 
 	public static void main(String[] args) {

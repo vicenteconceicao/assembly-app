@@ -1,6 +1,7 @@
 package com.assemblyline.application.controllers;
 
 import com.assemblyline.domain.entities.routine.Routine;
+import com.assemblyline.domain.interfaces.IServiceRoutine;
 import com.assemblyline.service.RoutineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,10 +14,10 @@ import java.util.List;
 public class AssemblyLineController {
 
     @Autowired
-    private RoutineService service;
+    private IServiceRoutine routineService;
 
     @GetMapping("/routines")
     public List<Routine> getAll(){
-        return service.getAll();
+        return routineService.getAll();
     }
 }
