@@ -6,14 +6,16 @@ import java.util.regex.Pattern;
 public class Task {
     private String description;
     private int minutes;
+    private boolean standard;
 
     public Task() {
 
     }
 
-    public Task(String description, int minutes) {
+    public Task(String description, int minutes, boolean standard) {
         this.description = description;
         this.minutes = minutes;
+        this.standard = standard;
     }
 
     public static Task parseTask(String string){
@@ -26,16 +28,23 @@ public class Task {
         if(string.contains("maintenance")){
             task.setDescription(string);
             task.setMinutes(5);
+            task.setStandard(true);
         }else if(matcher.matches()){
             task.setDescription(matcher.group(1));
             task.setMinutes(Integer.parseInt(matcher.group(2)));
+            task.setStandard(false);
         }
         return  task;
     }
 
     @Override
     public String toString() {
-        return description + " " + minutes+"min";
+        String string = "";
+        string += description;
+        if(!this.standard){
+            string += " " + minutes+"min";
+        }
+        return string;
     }
 
     public String getDescription() {
@@ -52,5 +61,13 @@ public class Task {
 
     public void setMinutes(int minutes) {
         this.minutes = minutes;
+    }
+
+    public boolean isStandard() {
+        return standard;
+    }
+
+    public void setStandard(boolean standard) {
+        this.standard = standard;
     }
 }

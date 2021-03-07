@@ -16,24 +16,24 @@ class RoutineTest {
     }
 
     @Test
-    @DisplayName("Teste simples para verificar se a tarefa será adicionada antes do período de almoço")
+    @DisplayName("Simple test to check if the task will be added before the lunch period")
     void addTask() {
-        Task task = new Task("Tarefa 1", 15);
+        Task task = new Task("Tarefa 1", 15, false);
         int usedTime = 540; // Tempo de início das tarefas.
         int maxMinutes = 720; // Tempo do almoço.
 
-        assertEquals(true,  routine.addTask(task, usedTime, maxMinutes), "Tarefa deve ser adicionada por estar dentro do tempo limite");
+        assertEquals(true,  routine.addTask(task, usedTime, maxMinutes), "Task must be added because it is within the time limit");
 
     }
 
     @Test
-    @DisplayName("Teste simples para verificar se a tarefa naõ será adicionada quando atingido o tempo limite")
+    @DisplayName("Simple test to verify that the task will not be added when the timeout is reached")
     void addTaskAfterMaxTime() {
-        Task task = new Task("Tarefa 1", 30);
+        Task task = new Task("Tarefa 1", 30, false);
         int usedTime = 720; // Tempo consumido pelas tarefas.
         int maxMinutes = 720; // Tempo do almoço.
 
-        assertEquals(false,  routine.addTask(task, usedTime, maxMinutes), "Tarefa não deve ser adicionada por estar além do tempo limite");
+        assertEquals(false,  routine.addTask(task, usedTime, maxMinutes), "Task should not be added as it is over time");
     }
 
 }

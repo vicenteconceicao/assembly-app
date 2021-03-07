@@ -42,6 +42,7 @@ public class RoutineService implements IServiceRoutine {
 
         Queue<Task> morningCircleTasks = tasks;
         Queue<Task> afternoonCircleTasks = new LinkedList<>();
+        Task standardTask;
 
         while (morningCircleTasks.size() > 0) {
 
@@ -63,7 +64,12 @@ public class RoutineService implements IServiceRoutine {
 
             morningCircleTasks.clear();
 
-            routine.addLunchOperation(FactoryOperation.getLunchOperation());
+            if(routine.getCurrentMinutes() < Options.MINUTE_LUNCH_TART) {
+                routine.setCurrentMinutes(Options.MINUTE_LUNCH_TART);
+            }
+
+            standardTask = FactoryTask.getLunchTask();
+            routine.addTask(standardTask, routine.getCurrentMinutes(), Options.MINUTE_LUNCH_TART + standardTask.getMinutes());
 
             /***
              * Algorithm to insert tasks in the afternoon (after lunch).
@@ -80,7 +86,12 @@ public class RoutineService implements IServiceRoutine {
 
             morningCircleTasks.addAll(afternoonCircleTasks);
 
-            routine.addTask(FactoryTask.getGymnasticsTask(), routine.getCurrentMinutes(), Options.MAX_MINUTE_GYMS_TART);
+            if(routine.getCurrentMinutes() < Options.MINUTE_GYMS_START) {
+                routine.setCurrentMinutes(Options.MINUTE_GYMS_START);
+            }
+
+            standardTask = FactoryTask.getGymnasticsTask();
+            routine.addTask(standardTask, routine.getCurrentMinutes(), Options.MAX_MINUTE_GYMS_TART);
 
             routineRepository.add(routine);
 

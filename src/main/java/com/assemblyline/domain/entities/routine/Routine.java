@@ -47,4 +47,8 @@ public class Routine {
             System.out.println(operations.get(i));
         }
     }
+
+    public void setCurrentMinutes(int currentMinutes) {
+        this.currentMinutes = currentMinutes;
+    }
 }
