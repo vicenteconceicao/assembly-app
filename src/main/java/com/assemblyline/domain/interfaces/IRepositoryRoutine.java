@@ -1,6 +1,7 @@
 package com.assemblyline.domain.interfaces;
 
 import com.assemblyline.domain.entities.routine.Routine;
+import com.assemblyline.domain.entities.task.Task;
 
 import java.util.ArrayList;
 

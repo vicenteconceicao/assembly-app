@@ -1,10 +1,13 @@
 package com.assemblyline.service;
 
+import com.assemblyline.domain.entities.operation.Operation;
 import com.assemblyline.domain.entities.routine.Routine;
 import com.assemblyline.domain.entities.task.Task;
-import com.assemblyline.domain.entities.task.TaskOperation;
+import com.assemblyline.domain.interfaces.IRepositoryRoutine;
 import com.assemblyline.domain.interfaces.IServiceRoutine;
-import com.assemblyline.domain.services.DefaultOperations;
+import com.assemblyline.domain.entities.operation.FactoryOperation;
+import com.assemblyline.domain.entities.task.FactoryTask;
+import com.assemblyline.domain.valueTypes.Options;
 import com.assemblyline.infrastructure.data.RoutineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,16 +20,16 @@ import java.util.Queue;
 public class RoutineService implements IServiceRoutine {
 
     @Autowired
-    RoutineRepository repository;
+    IRepositoryRoutine routineRepository;
 
     @Override
     public void add(Routine routine) {
-        repository.add(routine);
+        routineRepository.add(routine);
     }
 
     @Override
     public ArrayList<Routine> getAll() {
-        return repository.getAll();
+        return routineRepository.getAll();
     }
 
     @Override
@@ -37,40 +40,61 @@ public class RoutineService implements IServiceRoutine {
 
         Task item;
 
-        Queue<Task> tasksFirstCircle = tasks;
+        Queue<Task> morningCircleTasks = tasks;
+        Queue<Task> afternoonCircleTasks = new LinkedList<>();
 
-        while (tasksFirstCircle.size() > 0) {
+        while (morningCircleTasks.size() > 0) {
 
-            Queue<Task> tasksSecondCircle = new LinkedList<>();
+            afternoonCircleTasks.clear();
 
-            while (routine.getCurrentMinutes() < routine.getLunchMinute() && tasksFirstCircle.size() > 0) {
-                item = tasksFirstCircle.remove();
-                routineAdded = routine.addTask(item, routine.getCurrentMinutes(), routine.getLunchMinute());
+            /***
+             * Algorithm to insert tasks in the morning (before lunch)..
+             * The code inserts tasks as long as the total amount of time does not reach the start of lunch
+             * or until tasks on the list run out.
+             */
+            while (routine.getCurrentMinutes() < Options.MINUTE_LUNCH_TART && morningCircleTasks.size() > 0) {
+                item = morningCircleTasks.remove();
+                routineAdded = routine.addTask(item, routine.getCurrentMinutes(), Options.MINUTE_LUNCH_TART);
                 if (!routineAdded)
-                    tasksSecondCircle.add(item);
+                    afternoonCircleTasks.add(item);
             }
 
-            tasksSecondCircle.addAll(tasksFirstCircle);
+            afternoonCircleTasks.addAll(morningCircleTasks);
 
-            tasksFirstCircle.clear();
+            morningCircleTasks.clear();
 
-            routine.addLunchOperation(DefaultOperations.getLunchOperation());
+            routine.addLunchOperation(FactoryOperation.getLunchOperation());
 
-            while (routine.getCurrentMinutes() < routine.getMaxGymStartMinute() && tasksSecondCircle.size() > 0) {
-                item = tasksSecondCircle.remove();
-                routineAdded = routine.addTask(item, routine.getCurrentMinutes(), routine.getMaxGymStartMinute());
+            /***
+             * Algorithm to insert tasks in the afternoon (after lunch).
+             * The code inserts tasks as long as the total amount of time does not reach the beginning of the gym
+             * or until tasks on the list run out.
+             */
+            while (routine.getCurrentMinutes() < Options.MAX_MINUTE_GYMS_TART && afternoonCircleTasks.size() > 0) {
+                item = afternoonCircleTasks.remove();
+                routineAdded = routine.addTask(item, routine.getCurrentMinutes(), Options.MAX_MINUTE_GYMS_TART);
                 if (!routineAdded){
-                    tasksFirstCircle.add(item);
+                    morningCircleTasks.add(item);
                 }
             }
 
-            tasksFirstCircle.addAll(tasksSecondCircle);
+            morningCircleTasks.addAll(afternoonCircleTasks);
 
-            routine.addTask(DefaultOperations.getGymnasticsTask(), routine.getCurrentMinutes(), routine.getMaxGymStartMinute());
+            routine.addTask(FactoryTask.getGymnasticsTask(), routine.getCurrentMinutes(), Options.MAX_MINUTE_GYMS_TART);
 
-            repository.add(routine);
+            routineRepository.add(routine);
 
             routine = new Routine();
+        }
+    }
+
+    @Override
+    public void print() {
+        ArrayList<Routine> routs = routineRepository.getAll();
+        for (int i = 0; i < routs.size(); i++) {
+            System.out.println("Linha de montagem "+(i+1)+":");
+            routs.get(i).printOperations();
+            System.out.println("");
         }
     }
 }

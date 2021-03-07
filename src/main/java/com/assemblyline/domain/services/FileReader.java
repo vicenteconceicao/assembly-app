@@ -2,8 +2,7 @@ package com.assemblyline.domain.services;
 
 import com.assemblyline.domain.entities.task.Task;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -19,18 +18,22 @@ public class FileReader {
         Queue<Task> tasks = new LinkedList<>();
 
         try {
-            File file = new File(source);
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                String data = scanner.nextLine();
-                if(!data.isEmpty()){
-                    tasks.add(Task.parseTask(data));
+            // Foi necessário getResourceAsStream para encontrar o arquivo quando a aplicação é gerada.
+            InputStream inputStream = getClass().getResourceAsStream(source);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if(!line.isEmpty()){
+                    tasks.add(Task.parseTask(line));
                 }
             }
-            scanner.close();
+            reader.close();
+            inputStream.close();
 
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return tasks;

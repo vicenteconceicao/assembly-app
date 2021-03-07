@@ -1,17 +1,18 @@
-package com.assemblyline.domain.entities.task;
+package com.assemblyline.domain.entities.operation;
 
-import com.assemblyline.domain.entities.time.Time;
+import com.assemblyline.domain.entities.task.Task;
+import com.assemblyline.domain.valueTypes.Time;
 
-public class TaskOperation {
+public class Operation {
     private Task task;
     private Time startTime;
 
-    public TaskOperation(Task task, int currentMinutes) {
+    public Operation(Task task, int currentMinutes) {
         this.task = task;
         this.startTime = new Time(currentMinutes);
     }
 
-    public TaskOperation(Task task, Time startTime) {
+    public Operation(Task task, Time startTime) {
         this.task = task;
         this.startTime = startTime;
     }
