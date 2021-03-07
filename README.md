@@ -49,7 +49,14 @@ mvn spring-boot:run
 
 OR
 
-- Open Command Prompt and navigate to folder assembly-app/target
+- Open Command Prompt and navigate to folder assembly-app
+- Run the command below
+
+```shell
+mvn clean package
+```
+
+- Navigate to folder assembly-app/target
 - Run the command below
 
 ```shell
