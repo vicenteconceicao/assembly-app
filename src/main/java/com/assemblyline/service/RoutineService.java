@@ -1,14 +1,11 @@
 package com.assemblyline.service;
 
-import com.assemblyline.domain.entities.operation.Operation;
 import com.assemblyline.domain.entities.routine.Routine;
 import com.assemblyline.domain.entities.task.Task;
 import com.assemblyline.domain.interfaces.IRepositoryRoutine;
 import com.assemblyline.domain.interfaces.IServiceRoutine;
-import com.assemblyline.domain.entities.operation.FactoryOperation;
 import com.assemblyline.domain.entities.task.FactoryTask;
 import com.assemblyline.domain.valueTypes.Options;
-import com.assemblyline.infrastructure.data.RoutineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
